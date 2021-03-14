@@ -105,6 +105,13 @@ class Products(Client):
         """
         return self._create_get_pricing_request(asin_list, 'Asin', **kwargs)
 
+    def get_item_offers(self, asin: str, **kwargs) -> ApiResponse:
+        kwargs = {'path': '/products/pricing/v0/items/' + asin + '/offers', 'method' : 'GET'}
+        return self._request(kwargs.pop('path'),
+                             params={'Asin': asin,
+                             'ItemCondition': 'New',
+                             'MarketplaceId': kwargs.get('MarketplaceId', self.marketplace_id)})
+
     def _create_get_pricing_request(self, item_list, item_type, **kwargs):
         return self._request(kwargs.pop('path'),
                              params={**{f"{item_type}s": ','.join(
